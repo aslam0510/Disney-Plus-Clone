@@ -1,67 +1,107 @@
+import { auth, provider } from '../firebase';
 import React from 'react';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import {
+  selectUserName,
+  selectUserEmail,
+  selectUserPhoto,
+  setUserLoginDetails,
+  setsignOutState,
+} from './../features/user/userSlice';
 
 function Header() {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const userName = useSelector(selectUserName);
+  const userPhoto = useSelector(selectUserPhoto);
+
+  const handleAuth = () => {
+    auth
+      .signInWithPopup(provider)
+      .then((result) => {
+        setUser(result.user);
+      })
+      .catch((err) => console.log(err));
+  };
+  const setUser = (user) => {
+    dispatch(
+      setUserLoginDetails({
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+      })
+    );
+  };
+
   return (
     <Nav>
       <NavIcon src="/Images/logo.svg" height="60px" width="180px" />
-      <NavMenu>
-        <a href="/home">
-          <img
-            src="/Images/home-icon.svg"
-            alt="Home"
-            width="30px"
-            height="30px"
-          />
-          <span>HOME</span>
-        </a>
-        <a href="/home">
-          <img
-            src="/Images/search-icon.svg"
-            alt="Home"
-            width="30px"
-            height="30px"
-          />
-          <span>SEARCH</span>
-        </a>
-        <a href="/home">
-          <img
-            src="/Images/watchlist-icon.svg"
-            alt="Home"
-            width="30px"
-            height="30px"
-          />
-          <span>WATHCLIST</span>
-        </a>
-        <a href="/home">
-          <img
-            src="/Images/original-icon.svg"
-            alt="Home"
-            width="30px"
-            height="30px"
-          />
-          <span>ORIGINALS</span>
-        </a>
-        <a href="/home">
-          <img
-            src="/Images/movie-icon.svg"
-            alt="Home"
-            width="30px"
-            height="30px"
-          />
-          <span>MOVIES</span>
-        </a>
-        <a href="/home">
-          <img
-            src="/Images/series-icon.svg"
-            alt="Home"
-            width="30px"
-            height="30px"
-          />
-          <span>SERIES</span>
-        </a>
-      </NavMenu>
-      <LoginButton>LOGIN</LoginButton>
+
+      {!userName ? (
+        <LoginButton onClick={handleAuth}>LOGIN</LoginButton>
+      ) : (
+        <>
+          <NavMenu>
+            <a href="/home">
+              <img
+                src="/Images/home-icon.svg"
+                alt="Home"
+                width="30px"
+                height="30px"
+              />
+              <span>HOME</span>
+            </a>
+            <a href="/home">
+              <img
+                src="/Images/search-icon.svg"
+                alt="Home"
+                width="30px"
+                height="30px"
+              />
+              <span>SEARCH</span>
+            </a>
+            <a href="/home">
+              <img
+                src="/Images/watchlist-icon.svg"
+                alt="Home"
+                width="30px"
+                height="30px"
+              />
+              <span>WATHCLIST</span>
+            </a>
+            <a href="/home">
+              <img
+                src="/Images/original-icon.svg"
+                alt="Home"
+                width="30px"
+                height="30px"
+              />
+              <span>ORIGINALS</span>
+            </a>
+            <a href="/home">
+              <img
+                src="/Images/movie-icon.svg"
+                alt="Home"
+                width="30px"
+                height="30px"
+              />
+              <span>MOVIES</span>
+            </a>
+            <a href="/home">
+              <img
+                src="/Images/series-icon.svg"
+                alt="Home"
+                width="30px"
+                height="30px"
+              />
+              <span>SERIES</span>
+            </a>
+          </NavMenu>
+          <UserImage src={userPhoto} />
+        </>
+      )}
     </Nav>
   );
 }
@@ -116,9 +156,9 @@ const LoginButton = styled.a`
   width: 120px;
   letter-spacing: 2px;
   align-items: center;
- border-radius: 4px;
+  border-radius: 4px;
 
-  &:hover{
+  &:hover {
     background-color: #f9f9f9;
     color: black;
     cursor: pointer;
@@ -127,4 +167,9 @@ const LoginButton = styled.a`
 `;
 const NavIcon = styled.img``;
 
+const UserImage = styled.img`
+  height: 70%;
+  border-radius: 25px;
+  margin-right: 20px;
+`;
 export default Header;
