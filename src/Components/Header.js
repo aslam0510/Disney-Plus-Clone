@@ -1,8 +1,8 @@
 import { auth, provider } from '../firebase';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import {
   selectUserName,
   selectUserEmail,
@@ -17,13 +17,30 @@ function Header() {
   const userName = useSelector(selectUserName);
   const userPhoto = useSelector(selectUserPhoto);
 
+  useEffect(() => {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        setUser(user);
+        history.push('/home');
+      }
+    });
+  }, [userName]);
+
   const handleAuth = () => {
-    auth
+    if(!userName){
+      auth
       .signInWithPopup(provider)
       .then((result) => {
         setUser(result.user);
       })
       .catch((err) => console.log(err));
+    }else if(userName){
+      auth.signOut().then(()=>{
+        dispatch(setsignOutState());
+        history.push('/')
+      }).catch(err =>alert(err.message))
+    }
+   
   };
   const setUser = (user) => {
     dispatch(
@@ -44,7 +61,7 @@ function Header() {
       ) : (
         <>
           <NavMenu>
-            <a href="/home">
+            <Link to="/home">
               <img
                 src="/Images/home-icon.svg"
                 alt="Home"
@@ -52,8 +69,8 @@ function Header() {
                 height="30px"
               />
               <span>HOME</span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link>
               <img
                 src="/Images/search-icon.svg"
                 alt="Home"
@@ -61,8 +78,8 @@ function Header() {
                 height="30px"
               />
               <span>SEARCH</span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link>
               <img
                 src="/Images/watchlist-icon.svg"
                 alt="Home"
@@ -70,8 +87,8 @@ function Header() {
                 height="30px"
               />
               <span>WATHCLIST</span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link>
               <img
                 src="/Images/original-icon.svg"
                 alt="Home"
@@ -79,8 +96,8 @@ function Header() {
                 height="30px"
               />
               <span>ORIGINALS</span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link>
               <img
                 src="/Images/movie-icon.svg"
                 alt="Home"
@@ -88,8 +105,8 @@ function Header() {
                 height="30px"
               />
               <span>MOVIES</span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link>
               <img
                 src="/Images/series-icon.svg"
                 alt="Home"
@@ -97,9 +114,14 @@ function Header() {
                 height="30px"
               />
               <span>SERIES</span>
-            </a>
+            </Link>
           </NavMenu>
-          <UserImage src={userPhoto} />
+          <SignOut>
+            <UserImage src={userPhoto} />
+            <DropDown>
+              <span onClick={handleAuth}>Sign out</span>
+            </DropDown>
+          </SignOut>
         </>
       )}
     </Nav>
@@ -168,8 +190,43 @@ const LoginButton = styled.a`
 const NavIcon = styled.img``;
 
 const UserImage = styled.img`
-  height: 70%;
-  border-radius: 25px;
-  margin-right: 20px;
+  height: 100%;
+  border-radius: 20px;
+  
+  
 `;
+
+const DropDown = styled.div`
+  position: absolute;
+    top: 42px;
+   right: 18px;
+    width: 150px;
+    letter-spacing: 3.5px;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 10px;
+    background: rgba(19, 19, 19);
+    border: 1px solid rgba(151, 151, 151, 0.34);
+    border-radius: 4px;
+    opacity: 0;
+
+  
+`;
+const SignOut = styled.div`
+ position: relative;
+ height: 48px;
+ width: 48px;
+ display :flex;
+ margin-right: 10px;
+ justify-content: center;
+ align-items: center;
+
+ &:hover{
+   ${DropDown}{
+     opacity: 1;
+     transition-duration: 1s;
+   }
+ }
+`;
+
 export default Header;
