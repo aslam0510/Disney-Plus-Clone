@@ -62,7 +62,7 @@ const Carousel = styled(Slider)`
     &:before {
       font-size: 13px;
       color: rgb(150,158,171);
-     
+     padding: 10px 0
     }
   }
 
