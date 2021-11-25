@@ -27,7 +27,7 @@ const Section = styled.section`
   display: flex;
   flex-direction: column;
   text-align: center;
-  height: 100vh;
+  height: 92vh;
 `;
 
 const Content = styled.div`

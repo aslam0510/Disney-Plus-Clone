@@ -129,7 +129,7 @@ function Header() {
 }
 
 const Nav = styled.nav`
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
