@@ -1,29 +1,23 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-
+import { useSelector } from 'react-redux';
+import { selectNewDisney } from '../features/Movies/moviesSlice';
 
 function NewDisney() {
+  const movies = useSelector(selectNewDisney);
   return (
     <Container>
       <h4>New to Disney+</h4>
       <Content>
-       <Wrap>
-         <Link to="/"> <img src="https://img1.hotstarext.com/image/upload/f_auto,t_web_vl_2_5x/sources/r1/cms/prod/207/1010207-v-7ce81619527e" alt="3"/>
+      {movies && movies.map((movie,key) =>(
+         <Wrap key={key}>
+           {movie.id}
+           <Link to={{pathname : `/detail/${movie.id}`, state : {movie}}}>
+             <img src={movie.cardImg} alt={movie.title} />
          </Link>
-       </Wrap>
-       <Wrap>
-         <Link to="/"> <img src="https://img1.hotstarext.com/image/upload/f_auto,t_web_vl_2_5x/sources/r1/cms/prod/207/1010207-v-7ce81619527e" alt="3" />
-         </Link>
-       </Wrap>
-       <Wrap>
-         <Link to="/"> <img src="https://img1.hotstarext.com/image/upload/f_auto,t_web_vl_2_5x/sources/r1/cms/prod/207/1010207-v-7ce81619527e" alt="3" />
-         </Link>
-       </Wrap>
-       <Wrap>
-         <Link to="/"> <img src="https://img1.hotstarext.com/image/upload/f_auto,t_web_vl_2_5x/sources/r1/cms/prod/207/1010207-v-7ce81619527e" alt="3"/>
-         </Link>
-       </Wrap>
+         </Wrap>
+       ))}
       </Content>
     </Container>
   )

@@ -11,7 +11,6 @@ const initialState = {
   initialState,
   reducers: {
     setUserLoginDetails: (state, action) => {
-      console.log(action);
       state.name = action.payload.name;
       state.email = action.payload.email;
       state.photo = action.payload.photo;

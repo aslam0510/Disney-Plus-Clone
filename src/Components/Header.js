@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import {
   selectUserName,
-  selectUserEmail,
   selectUserPhoto,
   setUserLoginDetails,
   setsignOutState,
