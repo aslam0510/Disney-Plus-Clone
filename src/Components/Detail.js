@@ -39,15 +39,15 @@ function Detail(props) {
             <img src="/Images/play-icon-white.png" alt="icon" />
             <span>Trailer</span>
           </Trailer>
-          <AddList>
+          {/* <AddList>
             <span></span>
             <span></span>
-          </AddList>
-          <GroupWatch>
+          </AddList> */}
+          {/* <GroupWatch>
             <div>
               <img src="/Images/group-icon.png" alt="group-icon" />
             </div>
-          </GroupWatch>
+          </GroupWatch> */}
         </Controls>
         <Controls>{detailData.subTitle}</Controls>
         <Controls>{detailData.description}</Controls>
@@ -183,25 +183,33 @@ const AddList = styled.div`
    }
  }
 `
- const GroupWatch = styled.div`
-  height: 54px;
-  width: 54px;
-  border-radius:50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  background: white;
+//  const GroupWatch = styled.div`
+//   height: 54px;
+//   width: 54px;
+//   border-radius:50%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   cursor: pointer;
+//   background: white;
 
-  div{
-    height:44px;
-    width:44px;
-    background: rgb(0,0,0);
-    border-radius: 50%;
+//   div{
+//     height:44px;
+//     width:44px;
+//     background: rgb(0,0,0);
+//     border-radius: 50%;
 
-    img{
-      width:100%
-    }
-  }
-`
+//     img{
+//       width:100%
+//     }
+
+//     @media (max-width: 768px) {
+//     height: 48px;
+    
+//     img{
+//       width: 25px;
+//     }
+//   }
+//   }
+// `
 export default Detail;
